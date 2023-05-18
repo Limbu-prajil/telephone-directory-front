@@ -17,6 +17,6 @@ const dilit =  (id) => {
     return axios.delete(`${baseUrl}/${id}`).then(res => res.data)
   }
   
-const note = { create, read, update, dilit }
+const person = { create, read, update, dilit }
 
-export default note;
+export default person;

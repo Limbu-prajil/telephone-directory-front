@@ -1,7 +1,6 @@
 import React from 'react'
 import Info from './Info'
 import Form from './Form'
-import axios from 'axios'
 import axiosService from './axios-services/persons'
 
 class App extends React.Component {
@@ -49,7 +48,7 @@ class App extends React.Component {
   addName = (event) => {
     event.preventDefault()
     const nameNumber = {name: this.state.newName, number: this.state.newNum}
-    let checkName = this.state.persons.find(e => e.name === nameNumber.name)
+    let checkName = this.state.persons.find(e => e.name.toLowerCase() === nameNumber.name.toLowerCase())
     let checkNumber = this.state.persons.find(e => e.number === nameNumber.number)
     if ((checkName !== undefined || checkNumber !== undefined) || (checkName !== undefined && checkNumber !== undefined)) {
         alert('Name or number match');
@@ -78,24 +77,28 @@ class App extends React.Component {
 
   deleteInfo = (idd) => {
     return () => {
-      (window.confirm("Do you really want to delete?")) 
-      axiosService
-        .dilit(idd)
-        .then(newpersons => {
-          console.log('cruD', newpersons);
-          const personsAterDel = this.state.persons.filter(e => e.id !== idd)
-          this.setState({
-            persons: [...personsAterDel]
+      if (window.confirm("Do you really want to delete?")) {
+        axiosService
+          .dilit(idd)
+          .then(newpersons => {
+            console.log('cruD', newpersons);
+            const personsAterDel = this.state.persons.filter(e => e.id !== idd)
+            this.setState({
+              persons: [...personsAterDel]
+            })
           })
-        })
-        .catch(error => {
-          this.setState({
-            error: `Info ${this.state.persons.filter(e => e.id === idd)} can not be unfortunately removed from server.`,
+          .catch(error => {
+            this.setState({
+              error: `Info ${this.state.persons.filter(e => e.id === idd)} can not be unfortunately removed from server.`,
+            })
+            setTimeout(() => {
+              this.setState({error: null})
+            }, 3000)
           })
-          setTimeout(() => {
-            this.setState({error: null})
-          }, 3000)
-        })
+          console.log("Delete success!");
+      } else {
+        console.log("Delete operation canceled or dialog closed.")
+      }
     }
   }
 
@@ -110,7 +113,7 @@ class App extends React.Component {
         number: updatedNum !== null ? updatedNum : this.state.persons.find(e => e.id === idd).number
       };
   
-      axios
+      axiosService
         .update(idd, updatedPerson)
         .then(updatedPerson => {
           console.log('crUd');
