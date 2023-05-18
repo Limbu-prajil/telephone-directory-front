@@ -31,6 +31,7 @@ class App extends React.Component {
         this.setState({
           error: `Information unfortunately not found.`
         })
+        console.log(this.state.error)
         setTimeout(() => {
           this.setState({error: null})
         }, 2000)
@@ -58,6 +59,7 @@ class App extends React.Component {
           newNum: '',
           error: `Info ${nameNumber.name} and ${nameNumber.number} must be unique.`
         })
+        console.log(this.state.error)
         setTimeout(() => {
           this.setState({error: null})
         }, 3000)
@@ -91,9 +93,10 @@ class App extends React.Component {
             this.setState({
               error: `Info ${this.state.persons.filter(e => e.id === idd)} can not be unfortunately removed from server.`,
             })
+            console.log(this.state.error)
             setTimeout(() => {
               this.setState({error: null})
-            }, 3000)
+            }, 2000)
           })
           console.log("Delete success!");
       } else {
@@ -131,9 +134,10 @@ class App extends React.Component {
           this.setState({
             error: `Info ${updatedName} or ${updatedNum} have been already unfortunately edited from server.`,
           })
+          console.log(this.state.error)
           setTimeout(() => {
             this.setState({error: null})
-          }, 3000)
+          }, 2000)
         })
     };
   }  
@@ -153,3 +157,4 @@ class App extends React.Component {
 }
 
 export default App;
+
